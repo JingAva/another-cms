@@ -1,0 +1,9 @@
+.admin-sidebar {
+    float: left;
+    height: 100%;
+    box-shadow: none !important;
+    z-index: 1;
+    .v-navigation-drawer {
+        top: 50px !important;
+    }
+}

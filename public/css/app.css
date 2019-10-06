@@ -10644,3 +10644,27 @@ a.text-dark:focus {
   }
 }
 
+.admin-sidebar {
+  float: left;
+  height: 100%;
+  box-shadow: none !important;
+  z-index: 1;
+}
+
+.admin-sidebar .v-navigation-drawer {
+  top: 50px !important;
+}
+
+.admin-header {
+  padding: 0;
+  z-index: 2;
+}
+
+.admin-header .container {
+  padding: 0;
+}
+
+.admin-header__logo img {
+  height: 40px;
+}
+
