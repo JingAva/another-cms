@@ -1960,15 +1960,15 @@ __webpack_require__.r(__webpack_exports__);
       items: [{
         title: 'Dashboard',
         icon: 'mdi-view-dashboard',
-        link: '/'
+        link: '#dashboard'
       }, {
         title: 'Photos',
         icon: 'mdi-image',
-        link: '/'
+        link: '#photos'
       }, {
         title: 'About',
         icon: 'mdi-help-box',
-        link: '/'
+        link: '#about'
       }],
       right: null
     };
@@ -37954,7 +37954,10 @@ var render = function() {
                 [
                   _c(
                     "a",
-                    { attrs: { href: item.link } },
+                    {
+                      staticClass: "admin-sidebar__item-link",
+                      attrs: { href: item.link }
+                    },
                     [
                       _c(
                         "v-list-item-icon",

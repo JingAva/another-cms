@@ -14,7 +14,7 @@
           :key="item.title"
           link
         >
-          <a :href="item.link">
+          <a :href="item.link" class="admin-sidebar__item-link">
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -34,9 +34,9 @@
     data () {
       return {
         items: [
-          { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/' },
-          { title: 'Photos', icon: 'mdi-image', link: '/' },
-          { title: 'About', icon: 'mdi-help-box', link: '/' },
+          { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '#dashboard' },
+          { title: 'Photos', icon: 'mdi-image', link: '#photos' },
+          { title: 'About', icon: 'mdi-help-box', link: '#about' },
         ],
         right: null,
       }
