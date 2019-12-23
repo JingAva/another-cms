@@ -19,7 +19,7 @@ if (path.includes("admin")) {
     Vue.use(VueRouter)
 
     const adminRouter = new VueRouter({
-        mode: 'history',
+        mode: 'history',  //remove # in url
         base: '/admin',
         routes: adminRoutes,
     });

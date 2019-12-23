@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+// Only verified email can login to the admin
+Auth::routes(['verify' => true]);
 
-Route::get('/admin', 'HomeController@index')->name('admin');
+Route::get('/admin', 'HomeController@index')->name('admin')->middleware('verified');

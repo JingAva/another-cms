@@ -95006,6 +95006,7 @@ if (path.includes("admin")) {
   Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]);
   var adminRouter = new vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]({
     mode: 'history',
+    //remove # in url
     base: '/admin',
     routes: _admin_routes_adminRoute_js__WEBPACK_IMPORTED_MODULE_5__["adminRoutes"]
   });
@@ -95097,8 +95098,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp2\htdocs\cms\another-cms\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp2\htdocs\cms\another-cms\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp2\htdocs\AnotherCMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp2\htdocs\AnotherCMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
