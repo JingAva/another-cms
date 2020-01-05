@@ -184,7 +184,7 @@ export default {
         value: 'name',
       },
       { text: 'Email', value: 'email' },
-      { text: 'Access Group', value: 'role' },
+      { text: 'Access Group', value: 'access_id' },
       { text: 'Status', value: 'status_display' },
       { text: 'Actions', value: 'action', sortable: false },
     ],

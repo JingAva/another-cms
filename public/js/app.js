@@ -2959,7 +2959,7 @@ __webpack_require__.r(__webpack_exports__);
         value: 'email'
       }, {
         text: 'Access Group',
-        value: 'role'
+        value: 'access_id'
       }, {
         text: 'Status',
         value: 'status_display'
@@ -95098,8 +95098,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp2\htdocs\AnotherCMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp2\htdocs\AnotherCMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp7.3\htdocs\another-cms\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp7.3\htdocs\another-cms\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
