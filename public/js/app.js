@@ -2918,22 +2918,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2942,7 +2926,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      roles: ['client', 'administrator'],
+      roles: [],
       dialog: false,
       snackbar: false,
       loading: true,
@@ -2959,10 +2943,10 @@ __webpack_require__.r(__webpack_exports__);
         value: 'email'
       }, {
         text: 'Access Group',
-        value: 'access_id'
+        value: 'access_name'
       }, {
         text: 'Status',
-        value: 'status_display'
+        value: 'status'
       }, {
         text: 'Actions',
         value: 'action',
@@ -2973,21 +2957,19 @@ __webpack_require__.r(__webpack_exports__);
       editedItem: {
         name: '',
         email: '',
-        role: '',
+        access_id: '',
+        access_name: '',
         status: '',
-        about: '',
         password: '',
-        photo: '',
         confirmpassword: ''
       },
       defaultItem: {
         name: '',
         email: '',
-        role: '',
+        access_id: '',
+        access_name: '',
         status: '',
-        about: '',
         password: '',
-        photo: '',
         confirmpassword: ''
       },
       show1: false,
@@ -3007,39 +2989,37 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.initialize();
+    this.getRoles();
   },
   methods: {
-    initialize: function initialize() {
+    getRoles: function getRoles() {
       var _this = this;
 
-      axios.get('/api/users').then(function (response) {
+      axios.get('/api/usergroups').then(function (response) {
         if (response.data) {
-          var users = Object.keys(response.data).map(function (k) {
+          var roles = Object.keys(response.data).map(function (k) {
             return response.data[k];
           });
-          _this.users = users[0];
+          _this.roles = roles[0];
           _this.loading = false;
         }
       })["catch"](function (response) {
         console.log(response);
       });
     },
-    onImageChange: function onImageChange(e) {
+    initialize: function initialize() {
       var _this2 = this;
 
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      var image = e.target.files[0];
-      var currentObj = this;
-      var config = {
-        headers: {
-          'content-type': 'multipart/form-data'
+      axios.get('/api/users').then(function (response) {
+        if (response.data) {
+          var users = Object.keys(response.data).map(function (k) {
+            return response.data[k];
+          });
+          _this2.users = users;
+          _this2.loading = false;
         }
-      };
-      var formData = new FormData();
-      formData.append('image', image);
-      axios.post('/api/formSubmit', formData, config).then(function (res) {
-        _this2.editedItem.photo = res.data.data;
+      })["catch"](function (response) {
+        console.log(response);
       });
     },
     editItem: function editItem(item) {
@@ -3074,6 +3054,14 @@ __webpack_require__.r(__webpack_exports__);
         this.editedItem.status_display = 'Active';
       } else {
         this.editedItem.status_display = 'Blocked';
+      }
+
+      if (this.editedItem.access_id) {
+        var result = this.roles.find(function (_ref) {
+          var value = _ref.value;
+          return value === _this5.editedItem.access_id;
+        });
+        this.editedItem.access_name = result.text;
       }
 
       var valid = true;
@@ -40514,49 +40502,6 @@ var render = function() {
                                         _c(
                                           "v-row",
                                           [
-                                            _vm.editedItem.photo
-                                              ? _c(
-                                                  "v-col",
-                                                  {
-                                                    attrs: {
-                                                      cols: "12",
-                                                      sm: "6",
-                                                      md: "12"
-                                                    }
-                                                  },
-                                                  [
-                                                    _c("img", {
-                                                      attrs: {
-                                                        src:
-                                                          "/images/" +
-                                                          _vm.editedItem.photo,
-                                                        width: "150"
-                                                      }
-                                                    })
-                                                  ]
-                                                )
-                                              : _vm._e(),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-col",
-                                              {
-                                                attrs: {
-                                                  cols: "12",
-                                                  sm: "6",
-                                                  md: "12"
-                                                }
-                                              },
-                                              [
-                                                _c("input", {
-                                                  staticClass: "form-control",
-                                                  attrs: { type: "file" },
-                                                  on: {
-                                                    change: _vm.onImageChange
-                                                  }
-                                                })
-                                              ]
-                                            ),
-                                            _vm._v(" "),
                                             _c(
                                               "v-col",
                                               {
@@ -40732,19 +40677,24 @@ var render = function() {
                                                   attrs: {
                                                     items: _vm.roles,
                                                     label: "Access Group",
-                                                    outlined: ""
+                                                    outlined: "",
+                                                    "item-text": "text",
+                                                    "item-value": "value",
+                                                    value:
+                                                      _vm.editedItem.access_id
                                                   },
                                                   model: {
-                                                    value: _vm.editedItem.role,
+                                                    value:
+                                                      _vm.editedItem.access_id,
                                                     callback: function($$v) {
                                                       _vm.$set(
                                                         _vm.editedItem,
-                                                        "role",
+                                                        "access_id",
                                                         $$v
                                                       )
                                                     },
                                                     expression:
-                                                      "editedItem.role"
+                                                      "editedItem.access_id"
                                                   }
                                                 })
                                               ],
@@ -40795,38 +40745,6 @@ var render = function() {
                                                   ],
                                                   1
                                                 )
-                                              ],
-                                              1
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-col",
-                                              {
-                                                attrs: {
-                                                  cols: "12",
-                                                  sm: "6",
-                                                  md: "12"
-                                                }
-                                              },
-                                              [
-                                                _c("v-textarea", {
-                                                  attrs: {
-                                                    solo: "",
-                                                    label: "About"
-                                                  },
-                                                  model: {
-                                                    value: _vm.editedItem.about,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.editedItem,
-                                                        "about",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression:
-                                                      "editedItem.about"
-                                                  }
-                                                })
                                               ],
                                               1
                                             )
@@ -95098,8 +95016,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp7.3\htdocs\another-cms\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp7.3\htdocs\another-cms\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp2\htdocs\AnotherCMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp2\htdocs\AnotherCMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

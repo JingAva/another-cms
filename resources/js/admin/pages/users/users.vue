@@ -40,16 +40,6 @@
                     <v-card-text>
                       <v-container>
                         <v-row>
-                          <v-col cols="12" sm="6" md="12" v-if="editedItem.photo">
-                            <img :src="`/images/${editedItem.photo}`" width="150" />
-                          </v-col>
-                          <v-col cols="12" sm="6" md="12">
-                            <input 
-                              type="file" 
-                              class="form-control" 
-                              @change="onImageChange"
-                            />
-                          </v-col>
                           <v-col cols="12" sm="6" md="12">
                             <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
                           </v-col>
@@ -83,11 +73,12 @@
                             ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6" md="6">
-                            <v-select
+                            <v-select 
                               :items="roles"
                               label="Access Group"
-                              outlined
-                              v-model="editedItem.role"
+                              outlined item-text="text" item-value="value" 
+                              :value="editedItem.access_id" 
+                              v-model="editedItem.access_id"
                             ></v-select>
                           </v-col>
                           <v-col cols="12" sm="6" md="6">
@@ -101,13 +92,6 @@
                                 :value="0"
                               ></v-radio>
                             </v-radio-group>
-                          </v-col>
-                          <v-col cols="12" sm="6" md="12">
-                            <v-textarea
-                              solo
-                              v-model="editedItem.about"
-                              label="About"
-                            ></v-textarea>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -169,7 +153,7 @@ export default {
     Navigation
   },
   data: () => ({
-    roles: ['client', 'administrator'],
+    roles: [],
     dialog: false,
     snackbar: false,
     loading: true,
@@ -184,8 +168,8 @@ export default {
         value: 'name',
       },
       { text: 'Email', value: 'email' },
-      { text: 'Access Group', value: 'access_id' },
-      { text: 'Status', value: 'status_display' },
+      { text: 'Access Group', value: 'access_name' },
+      { text: 'Status', value: 'status' },
       { text: 'Actions', value: 'action', sortable: false },
     ],
     users: [],
@@ -193,21 +177,19 @@ export default {
     editedItem: {
       name: '',
       email: '',
-      role: '',
+      access_id: '',
+      access_name: '',
       status: '',
-      about: '',
       password: '',
-      photo: '',
       confirmpassword: '',
     },
     defaultItem: {
       name: '',
       email: '',
-      role: '',
+      access_id: '',
+      access_name: '',
       status: '',
-      about: '',
       password: '',
-      photo: '',
       confirmpassword: '',
     },
     show1: false,
@@ -228,18 +210,18 @@ export default {
   },
 
   created () {
-    this.initialize()
+    this.initialize();
+    this.getRoles();
   },
 
   methods: {
-    initialize () {
-
-      axios.get('/api/users')
+    getRoles() {
+      axios.get('/api/usergroups')
             .then(response => {
           
           if (response.data) {
-            let users = Object.keys(response.data).map((k) => response.data[k])
-            this.users = users[0];
+            let roles = Object.keys(response.data).map((k) => response.data[k])
+            this.roles = roles[0];
             this.loading = false;
           }
 
@@ -247,27 +229,21 @@ export default {
       .catch(response => {
           console.log(response);
       });
-
     },
-    onImageChange(e) {
+    initialize () {
 
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
-      return;  
+      axios.get('/api/users')
+            .then(response => {
+          
+          if (response.data) {
+            let users = Object.keys(response.data).map((k) => response.data[k])
+            this.users = users;
+            this.loading = false;
+          }
 
-      let image = e.target.files[0];
-
-      let currentObj = this;
-      const config = {
-        headers: { 'content-type': 'multipart/form-data' }
-      }
-
-      let formData = new FormData();
-      formData.append('image', image);
-
-      axios.post('/api/formSubmit', formData, config)
-      .then(res => {
-        this.editedItem.photo = res.data.data
+      })
+      .catch(response => {
+          console.log(response);
       });
 
     },
@@ -302,6 +278,11 @@ export default {
         this.editedItem.status_display = 'Active';
       } else {
         this.editedItem.status_display = 'Blocked';
+      }
+
+      if (this.editedItem.access_id) {
+        const result = this.roles.find(({ value }) => value === this.editedItem.access_id);
+        this.editedItem.access_name = result.text;
       }
 
       let valid = true;

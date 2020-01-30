@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CmsUserGroup;
+use App\Http\Resources\UserGroup as UserGroupResource;
 use Illuminate\Http\Request;
 
 class CmsUserGroupController extends Controller
@@ -15,6 +16,10 @@ class CmsUserGroupController extends Controller
     public function index()
     {
         //
+        $cmsUserGroups = CmsUserGroup::all();
+
+        // Return collection of users as a resource
+        return UserGroupResource::collection($cmsUserGroups);
     }
 
     /**

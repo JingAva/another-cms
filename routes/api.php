@@ -17,3 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('/users', 'CmsUsersController@index');
+Route::delete('/users/{user_id}', 'CmsUsersController@destroy');
+Route::post('/users', 'CmsUsersController@create');
+Route::patch('/users/{user_id}', 'CmsUsersController@update');
+
+
+
+Route::get('/usergroups', 'CmsUserGroupController@index');

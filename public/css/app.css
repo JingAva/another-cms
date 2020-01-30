@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Inconsolata:300,400,700|Material+Icons);@import url(https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css);@charset "UTF-8";
 
+.v-application a:hover {
+  text-decoration: none;
+}
+
 /*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
