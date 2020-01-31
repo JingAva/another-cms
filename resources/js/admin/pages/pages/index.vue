@@ -107,6 +107,7 @@
 import Navigation from '../../components/navigation'
 import {isEmpty} from '../../utils/'
 import TextEditor from '../../components/editor.vue';
+import Sortable from 'sortablejs';
 
 export default {
   components: {
@@ -125,10 +126,10 @@ export default {
         text: 'Title',
         align: 'left',
         sortable: false,
-        value: 'title',
+        value: 'name',
       },
-      { text: 'Status', value: 'status_display' },
-      { text: 'Actions', value: 'action', sortable: false },
+      { text: 'Status', value: 'status' },
+      { text: 'Actions', value: 'action', sortable: true },
     ],
     pages: [],
     editedIndex: -1,
@@ -163,10 +164,21 @@ export default {
     this.initialize()
   },
 
+  mounted() {
+    let table = document.querySelector(".v-data-table tbody");
+    const _self = this;
+    Sortable.create(table, {
+      onEnd({ newIndex, oldIndex}) {
+        const rowSelected = _self.desserts.splice(oldIndex, 1)[0];
+        _self.desserts.splice(newIndex, 0, rowSelected);
+      }
+    })
+  },
+
   methods: {
     initialize() {
 
-      axios.get('/api/pages')
+      axios.get('/api/page')
             .then(response => {
           
         if (response.data) {
@@ -191,7 +203,7 @@ export default {
       const index = this.pages.indexOf(item)
 
       if (confirm('Are you sure you want to delete this page?')) {
-        axios.delete(`/api/pages/${item.id}`)
+        axios.delete(`/api/page/${item.id}`)
         .then(res => this.pages.splice(index, 1));
       }
 
@@ -229,7 +241,7 @@ export default {
 
         if (this.editedIndex > -1) {
 
-          axios.patch(`/api/pages/${this.editedItem.id}`, this.editedItem)
+          axios.patch(`/api/page/${this.editedItem.id}`, this.editedItem)
           .then(response => {
             let pages = Object.keys(response.data).map((k) => response.data[k])
             Object.assign(this.pages[this.editedIndex], pages[0])
@@ -237,7 +249,7 @@ export default {
 
         } else {
 
-          axios.post(`/api/pages`, this.editedItem)
+          axios.post(`/api/page`, this.editedItem)
           .then(response => {
 
             let pages = Object.keys(response.data).map((k) => response.data[k])

@@ -21,6 +21,6 @@ Route::delete('/users/{user_id}', 'CmsUsersController@destroy');
 Route::post('/users', 'CmsUsersController@create');
 Route::patch('/users/{user_id}', 'CmsUsersController@update');
 
-
+Route::get('/page', 'PageController@index');
 
 Route::get('/usergroups', 'CmsUserGroupController@index');
