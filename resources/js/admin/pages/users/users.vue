@@ -169,10 +169,11 @@ export default {
       },
       { text: 'Email', value: 'email' },
       { text: 'Access Group', value: 'access_name' },
-      { text: 'Status', value: 'status' },
+      { text: 'Status', value: 'statusText' },
       { text: 'Actions', value: 'action', sortable: false },
     ],
     users: [],
+    usersView: [],
     editedIndex: -1,
     editedItem: {
       name: '',
@@ -237,7 +238,18 @@ export default {
           
           if (response.data) {
             let users = Object.keys(response.data).map((k) => response.data[k])
-            this.users = users;
+
+            var arr = new Array()
+            users.forEach(function(element) {
+              if (element.status == 0){ 
+                element.statusText = 'Blocked'
+              } else {
+                element.statusText = 'Active'
+              }
+              arr.push(element)
+            })
+
+            this.users= arr
             this.loading = false;
           }
 

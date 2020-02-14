@@ -18,6 +18,9 @@
             loading-text="Loading... Please wait"
             :search="search"
           >
+             <template v-slot:item.id="{item}">
+              <span class="handle" :id="item.id">::</span>
+            </template>
             <template v-slot:top>
               <v-text-field v-model="search" label="Search" class="mx-4"></v-text-field>
               <v-toolbar flat color="white">
@@ -123,13 +126,20 @@ export default {
     timeout: 2000,
     headers: [
       {
+        text: '',
+        value: 'id',
+        width: '20',
+        sortable: false,
+      },
+      {
         text: 'Title',
         align: 'left',
-        sortable: false,
+        sortable: true,
         value: 'name',
       },
+      { text: 'Rank', value:'rank'},
       { text: 'Status', value: 'status' },
-      { text: 'Actions', value: 'action', sortable: true },
+      { text: 'Actions', value: 'action' },
     ],
     pages: [],
     editedIndex: -1,
@@ -168,9 +178,10 @@ export default {
     let table = document.querySelector(".v-data-table tbody");
     const _self = this;
     Sortable.create(table, {
+      handle: '.handle',
       onEnd({ newIndex, oldIndex}) {
-        const rowSelected = _self.desserts.splice(oldIndex, 1)[0];
-        _self.desserts.splice(newIndex, 0, rowSelected);
+        const rowSelected = _self.pages.splice(oldIndex, 1)[0];
+        _self.pages.splice(newIndex, 0, rowSelected);
       }
     })
   },
@@ -268,3 +279,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.handle {
+  cursor: grab;
+}
+</style>
