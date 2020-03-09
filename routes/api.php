@@ -15,12 +15,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::get('/users', 'CmsUsersController@index');
 Route::delete('/users/{user_id}', 'CmsUsersController@destroy');
 Route::post('/users', 'CmsUsersController@create');
 Route::patch('/users/{user_id}', 'CmsUsersController@update');
-
-Route::get('/page', 'PageController@index');
-
 Route::get('/usergroups', 'CmsUserGroupController@index');
+Route::get('/page', 'PageController@index')->name('admin.pages');
+Route::put('/page/updateAll', 'PageController@updateAll')->name('admin.pages.updateAll');
+

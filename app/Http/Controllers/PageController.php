@@ -6,6 +6,8 @@ use App\Page;
 use App\Http\Resources\Page as PagesResource;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -17,9 +19,9 @@ class PageController extends Controller
     public function index()
     {
         //
-        $pages =  Page::all();
+        $pages =  DB::table('pages')->orderBy('rank')->get();
 
-        return PagesResource::collection($pages);
+        return $pages;
     }
 
     /**
@@ -86,5 +88,22 @@ class PageController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAll(Request $request)
+    {
+        //
+        foreach($request->pages as $page) {
+            DB::table('pages')
+            ->where('id', $page['id'])
+            ->update(array('rank'=> $page['rank']));
+        }
+        return response('Update Successfull.', 200);
     }
 }

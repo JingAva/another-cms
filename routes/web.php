@@ -18,3 +18,7 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get('/admin', 'HomeController@index')->name('admin')->middleware('verified');
+
+Route::get('/admin/{url}', function(){
+    return View('admin');
+})->where('url', '[\/\w\.-]*');

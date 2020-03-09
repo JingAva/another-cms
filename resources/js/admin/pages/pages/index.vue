@@ -11,7 +11,7 @@
           </v-container>
           <v-data-table
             :headers="headers"
-            :items="pages"
+            :items="newPages"
             sort-by="title"
             class="elevation-1"
             :loading="loading" 
@@ -19,7 +19,7 @@
             :search="search"
           >
              <template v-slot:item.id="{item}">
-              <span class="handle" :id="item.id">::</span>
+              <i class="fa fa-arrows handle" :id="item.id"></i>
             </template>
             <template v-slot:top>
               <v-text-field v-model="search" label="Search" class="mx-4"></v-text-field>
@@ -138,10 +138,11 @@ export default {
         value: 'name',
       },
       { text: 'Rank', value:'rank'},
-      { text: 'Status', value: 'status' },
+      { text: 'Status', value: 'statusText' },
       { text: 'Actions', value: 'action' },
     ],
     pages: [],
+    newPages: [],
     editedIndex: -1,
     editedItem: {
       title: '',
@@ -179,9 +180,24 @@ export default {
     const _self = this;
     Sortable.create(table, {
       handle: '.handle',
+      selectedClass: 'selected-item',
+      ghostClass: "ghost",  // Class name for the drop placeholder
+      chosenClass: "chosen",  // Class name for the chosen item
+      dragClass: "drag", 
+      dragoverBubble: true,
       onEnd({ newIndex, oldIndex}) {
-        const rowSelected = _self.pages.splice(oldIndex, 1)[0];
-        _self.pages.splice(newIndex, 0, rowSelected);
+        const rowSelected = _self.newPages.splice(oldIndex, 1)[0]
+        _self.newPages.splice(newIndex, 0, rowSelected)
+        
+        _self.newPages.forEach(function(page, index) {
+          page.rank = index+1
+        })
+
+        axios.put('/api/page/updateAll', {
+          pages: _self.newPages
+        }).then((response) => {
+
+        })
       }
     })
   },
@@ -193,8 +209,22 @@ export default {
             .then(response => {
           
         if (response.data) {
-            let page = Object.keys(response.data).map((k) => response.data[k])
-            this.pages = page[0];
+            let pages = Object.keys(response.data).map((k) => response.data[k])
+            
+            var arr = new Array()
+            pages.forEach(function(element) {
+              if (element.status == 'A'){ 
+                element.statusText = 'Published'
+              } else if (element.status == 'H') {
+                element.statusText = 'Hidden'
+              } else {
+                element.statusText = 'Deleted'
+              }
+              arr.push(element)
+            })
+
+            this.pages = arr;
+            this.newPages = arr;
             this.loading = false;
         }
 
@@ -280,8 +310,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .handle {
   cursor: grab;
+}
+.selected-item {
+  background: lightgrey;
+}
+.ghost {
+  background-color: green;
+  opacity: 0.8;
+}
+.chosen {
+  background-color: rgb(228, 163, 163);
 }
 </style>
